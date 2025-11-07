@@ -1,0 +1,8 @@
+# Recurspos extras de la plantilla omitidos
+
+/pages/charts/*
+/pages/forms/*
+/pages/icons/*
+/pages/samples/*
+/pages/tables/*
+/pages/ui-features/*
