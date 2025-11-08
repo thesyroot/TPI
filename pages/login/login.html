@@ -4,7 +4,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Star Admin2 </title>
+    <title>Log In</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../../assets/vendors/feather/feather.css">
     <link rel="stylesheet" href="../../assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -20,7 +20,7 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="../../assets/css/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="../../assets/images/favicon.png" />
+    <!-- <link rel="shortcut icon" href="../../assets/images/favicon.png" /> -->
   </head>
   <body>
     <div class="container-scroller">
@@ -32,30 +32,25 @@
                 <div class="brand-logo">
                   <img src="../../assets/images/logo.svg" alt="logo">
                 </div>
-                <h4>Hello! let's get started</h4>
-                <h6 class="fw-light">Sign in to continue.</h6>
+                <h4>Hola de nuevo!!!</h4>
+                <h6 class="fw-light">Inicia sesion para continuar.</h6>
                 <form class="pt-3">
                   <div class="form-group">
-                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username">
+                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Correo Electronico">
                   </div>
                   <div class="form-group">
-                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
+                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Contraseña">
                   </div>
                   <div class="mt-3 d-grid gap-2">
-                    <a class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn" href="../../index.html">SIGN IN</a>
+                    <a id="sing-in" class="btn btn-block btn-primary btn-lg fw-medium auth-form-btn">INICIA SESION</a>
                   </div>
                   <div class="my-2 d-flex justify-content-between align-items-center">
                     <div class="form-check">
                       <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input"> Keep me signed in </label>
+                        <input id="exampleCheck1" type="checkbox" class="form-check-input"> Mantene la sesion abierta </label>
                     </div>
-                    <a href="#" class="auth-link text-black">Forgot password?</a>
                   </div>
-                  <div class="mb-2 d-grid gap-2">
-                    <button type="button" class="btn btn-block btn-facebook auth-form-btn">
-                      <i class="ti-facebook me-2"></i>Connect using facebook </button>
-                  </div>
-                  <div class="text-center mt-4 fw-light"> Don't have an account? <a href="register.html" class="text-primary">Create</a>
+                  <div class="text-center mt-4 fw-light"> No tienes una cuenta? <a href="../reigster/register.html" class="text-primary">Registrate</a>
                   </div>
                 </form>
               </div>
@@ -66,7 +61,8 @@
       </div>
       <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
+    
+    <script src="../../assets/js/login.js"></script>
     <!-- plugins:js -->
     <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
     <script src="../../assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
