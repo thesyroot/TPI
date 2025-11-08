@@ -1,0 +1,29 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f8;
+  color: #333;
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #444;
+}
+
+#nueva-reserva {
+  margin-top: 20px;
+}
+
+input {
+  margin: 5px;
+  padding: 5px;
+}
+
+button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+li {
+  margin: 10px 0;
+  list-style: none;
+}
