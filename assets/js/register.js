@@ -13,6 +13,32 @@ btn.addEventListener("click", async () => {
   let role = roleSelect.selectedIndex;
   let hashedPassword = await hashSHA256(password);
 
+  let res = await (await fetch("https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1/users", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })).json();
+
+  let exists = res.find(user => user.email === email);
+  if (exists) {
+    alert("El correo ya está registrado.");
+    return;
+  }
+
+  await fetch("https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: username,
+      email: email,
+      password: hashedPassword,
+      role: role,
+    }),
+  });
+
   setCookie("username", username);
   setCookie("hashedPassword", hashedPassword);
   setCookie("email", email);

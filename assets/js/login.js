@@ -5,25 +5,30 @@ btn.addEventListener("click", async () => {
 
     let hashedPassword = await hashSHA256(password);
 
+    let res = await (await fetch("https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1/users", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })).json();
+
+    let user = res.find(user => ( user.email === email || user.name === email ) && user.password === hashedPassword);
+    if (!user) {
+      alert("Correo/Usuario o contraseña incorrectos.");
+      return;
+    }
+
     let checkbox = document.getElementById("exampleCheck1").checked;
     if (checkbox) {
-        // se obtienen de la base de datos los datos faltantes para las cookies
-        let username = "mockUsername"; // reemplazar con consulta a la base de datos
-        let role = 1; // reemplazar con consulta a la base de datos
-
-        setCookie("username", username);
-        setCookie("hashedPassword", hashedPassword);
-        setCookie("email", email);
-        setCookie("role", role);
+      setCookie("username", user.name);
+      setCookie("hashedPassword", hashedPassword);
+      setCookie("email", user.email);
+      setCookie("role", user.role);
     }else {
-      // se obtienen de la base de datos los datos faltantes para las cookies
-      let username = "mockUsername"; // reemplazar con consulta a la base de datos
-      let role = 1; // reemplazar con consulta a la base de datos
-
-      setCookie("username", username, 0.1);
+      setCookie("username", user.name, 0.1);
       setCookie("hashedPassword", hashedPassword, 0.1);
-      setCookie("email", email, 0.1);
-      setCookie("role", role, 0.1);
+      setCookie("email", user.email, 0.1);
+      setCookie("role", user.role, 0.1);
   }
 
     window.location.replace("../../index.html");
