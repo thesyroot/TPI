@@ -20,11 +20,13 @@ btn.addEventListener("click", async () => {
 
     let checkbox = document.getElementById("exampleCheck1").checked;
     if (checkbox) {
+      setCookie("userId", user.id);
       setCookie("username", user.name);
       setCookie("hashedPassword", hashedPassword);
       setCookie("email", user.email);
       setCookie("role", user.role);
     }else {
+      setCookie("userId", user.id, 0.1);
       setCookie("username", user.name, 0.1);
       setCookie("hashedPassword", hashedPassword, 0.1);
       setCookie("email", user.email, 0.1);
