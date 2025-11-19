@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const MOCKAPI_BASE_URL = 'https://69125d1d52a60f10c8216e15.mockapi.io/api/v1/'; 
 
 function getStatusColor(status) {
@@ -77,6 +78,8 @@ function initializeDashboardRoleSpecifics() {
     }
 }
 
+=======
+>>>>>>> 69b7da939545d93bb23b1acb8b3fa4d88f644f79
 (function($) {
   'use strict';
   $(function() {
@@ -604,8 +607,11 @@ function initializeDashboardRoleSpecifics() {
       var date = new Date();
       date.setTime(date.getTime() + 24 * 60 * 60 * 1000); 
       $.cookie('staradmin2-pro-banner', "true", { expires: date });
+<<<<<<< HEAD
 
       initializeDashboardRoleSpecifics();
+=======
+>>>>>>> 69b7da939545d93bb23b1acb8b3fa4d88f644f79
     });
     
   });
