@@ -4,6 +4,7 @@ btn.addEventListener('click', function() {
     deleteCookie("username");
     deleteCookie("hashedPassword");
     deleteCookie("role");
+    deleteCookie("userId");
     
     window.location.replace("../../login/login.html");
 });
