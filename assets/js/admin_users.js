@@ -86,10 +86,10 @@ async function handleCreateUser(e) {
     messageDiv.innerHTML = '<div class="alert alert-info">Creando usuario...</div>';
 
     const newUser = {
-        nombre: document.getElementById('newUserName').value,
+        name: document.getElementById('newUserName').value,
         email: document.getElementById('newUserEmail').value,
         password: document.getElementById('newUserPassword').value,
-        role: document.getElementById('newUserRole').value,
+        role: parseInt(document.getElementById('newUserRole').value),
     };
 
     try {

@@ -1,6 +1,6 @@
 
 
-const MOCKAPI_BASE_URL = 'https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1'; 
+const MOCKAPI_BASE_URL = 'https://69125d1d52a60f10c8216e15.mockapi.io/api/v1'; 
 const reservationsTableBody = document.getElementById('reservationsTableBody');
 
 
@@ -8,8 +8,8 @@ async function fetchData() {
     try {
         const [reservationsRes, usersRes, roomsRes] = await Promise.all([
             fetch(`${MOCKAPI_BASE_URL}/reservations`),
-            fetch(`${MOCKAPI_BASE_URL}/users`),
-            fetch(`${MOCKAPI_BASE_URL}/rooms`)
+            fetch(`https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1/users`),
+            fetch(`https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1/rooms`)
         ]);
 
         if (!reservationsRes.ok || !usersRes.ok || !roomsRes.ok) {
@@ -35,23 +35,23 @@ function renderReservations(reservations, users, rooms) {
         return;
     }
 
-    const userMap = new Map(users.map(user => [user.id, user]));
-    const roomMap = new Map(rooms.map(room => [room.id, room]));
+    const userMap = new Map(users.map(user => [parseInt(user.id), user]));
+    const roomMap = new Map(rooms.map(room => [parseInt(room.id), room]));
 
     reservations.forEach(reservation => {
         const user = userMap.get(reservation.userId) || { nombre: 'Usuario Eliminado' };
         const room = roomMap.get(reservation.roomId) || { tipo: 'Habitación Desconocida' };
         
         const statusClass = {
-            'Pendiente': 'bg-warning',
-            'Confirmada': 'bg-success',
-            'Cancelada': 'bg-danger'
+            2: 'bg-warning',
+            1: 'bg-success',
+            3: 'bg-danger'
         }[reservation.estado] || 'bg-secondary';
 
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${reservation.id}</td>
-            <td>${user.nombre}</td>
+            <td>${user.name}</td>
             <td>${room.tipo}</td>
             <td>${reservation.checkIn}</td>
             <td>${reservation.checkOut}</td>
@@ -96,8 +96,13 @@ window.updateReservationStatus = updateReservationStatus;
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    const user = JSON.parse(sessionStorage.getItem('currentUser'));
-    if (!user || user.role !== 'ADMIN') {
+    const user = {
+            nombre: getCookie("username"),
+            email: getCookie("email"),
+            role: getCookie("role")
+        };
+
+    if (!user || user.role != 1) {
         alert('Acceso denegado. Solo para administradores.');
         window.location.href = '../dashboard/dashboard.html'; 
         return;
@@ -105,3 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     fetchData(); 
 });
+
+function getCookie(nombre) {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith(nombre + "="))
+    ?.split("=")[1] || null;
+}

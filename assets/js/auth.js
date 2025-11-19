@@ -1,7 +1,7 @@
     const MOCKAPI_URL = 'https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1'; 
 
     function handleLogout() {
-        sessionStorage.removeItem('currentUser');
+        // sessionStorage.removeItem('currentUser');
         window.location.href = '../../../index.html'; 
     }
 
@@ -15,6 +15,12 @@
                 <li class="nav-item"  style="margin-left:0px!important;">
                     <a class="nav-link" href="../../admin/admin_reservations.html">
                         <i class="menu-icon typcn typcn-calendar"></i>
+                        <span class="menu-title">Listas de Reservas</span>
+                    </a>
+                </li>
+                <li class="nav-item"  style="margin-left:0px!important;">
+                    <a class="nav-link" href="../../admin/admin_rev.html">
+                        <i class="menu-icon typcn typcn-th-list"></i>
                         <span class="menu-title">Gestión de Reservas</span>
                     </a>
                 </li>
@@ -33,7 +39,7 @@
             `;
             sidebarMenu.innerHTML += adminLinks;
 
-            console.log("hola");
+            // console.log("hola");
         }
         
         if (user.role == 2) {
@@ -49,7 +55,7 @@
     }
 
     function checkSession() {
-        const userString = sessionStorage.getItem('currentUser');
+        // const userString = sessionStorage.getItem('currentUser');
         const user = {
             nombre: getCookie("username"),
             email: getCookie("email"),
@@ -57,14 +63,14 @@
         };
         const path = window.location.pathname;
 
-        if (!user && !path.includes('login.html') && !path.includes('register.html') && !path.includes('index.html')) {
-            window.location.href = '../../../index.html';
-            return;
-        }
+        // if (!user && !path.includes('login.html') && !path.includes('register.html') && !path.includes('index.html')) {
+        //     window.location.href = '../../../index.html';
+        //     return;
+        // }
         
         if (user) {
             document.querySelectorAll('.username-tag').forEach(span => {
-                span.textContent = user.nombre || 'Usuario';
+                span.textContent = user.name || 'Usuario';
             });
             document.querySelectorAll('.email-tag').forEach(p => {
                 p.textContent = user.email;
@@ -73,9 +79,9 @@
             displayUserMenu(user);
         }
         
-        if (user && path.includes('login.html')) {
-            window.location.href = '../dashboard/dashboard.html'; 
-        }
+        // if (user && path.includes('login.html')) {
+        //     window.location.href = '../dashboard/dashboard.html'; 
+        // }
     }
 
     document.addEventListener('DOMContentLoaded', checkSession);
