@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const MOCKAPI_BASE_URL = 'https://69125d1d52a60f10c8216e15.mockapi.io/api/v1/'; 
 
 function getStatusColor(status) {
@@ -58,17 +57,21 @@ async function renderAdminDashboardChart() {
 }
 
 function initializeDashboardRoleSpecifics() {
-    const user = JSON.parse(sessionStorage.getItem('currentUser'));
+    const user = {
+            nombre: getCookie("username"),
+            email: getCookie("email"),
+            role: getCookie("role")
+        };
     
     const adminChartSection = document.getElementById('adminDashboardChart');
     const userReservationSection = document.getElementById('userReservationsSection'); 
 
-    if (user && user.role === 'ADMIN') {
+    if (user && user.role === 1) {
         if (userReservationSection) $(userReservationSection).hide(); 
         if (adminChartSection) $(adminChartSection).show();
         
         renderAdminDashboardChart();
-    } else if (user && user.role === 'USUARIO') { 
+    } else if (user && user.role === 2) { 
         if (adminChartSection) $(adminChartSection).hide();
         if (userReservationSection) $(userReservationSection).show();
     } else {
@@ -78,8 +81,6 @@ function initializeDashboardRoleSpecifics() {
     }
 }
 
-=======
->>>>>>> 69b7da939545d93bb23b1acb8b3fa4d88f644f79
 (function($) {
   'use strict';
   $(function() {
@@ -579,11 +580,11 @@ function initializeDashboardRoleSpecifics() {
 
 
     if ($.cookie('staradmin2-pro-banner')!="true") {
-      document.querySelector('#proBanner').classList.add('d-flex');
+      // document.querySelector('#proBanner').classList.add('d-flex');
       document.querySelector('.navbar').classList.remove('fixed-top');
     }
     else {
-      document.querySelector('#proBanner').classList.add('d-none');
+      // document.querySelector('#proBanner').classList.add('d-none');
       document.querySelector('.navbar').classList.add('fixed-top');
     }
     
@@ -597,22 +598,19 @@ function initializeDashboardRoleSpecifics() {
       document.querySelector('.navbar').classList.add('mt-3');
       
     }
-    document.querySelector('#bannerClose').addEventListener('click',function() {
-      document.querySelector('#proBanner').classList.add('d-none');
-      document.querySelector('#proBanner').classList.remove('d-flex');
-      document.querySelector('.navbar').classList.remove('pt-5');
-      document.querySelector('.navbar').classList.add('fixed-top');
-      document.querySelector('.page-body-wrapper').classList.add('proBanner-padding-top');
-      document.querySelector('.navbar').classList.remove('mt-3');
-      var date = new Date();
-      date.setTime(date.getTime() + 24 * 60 * 60 * 1000); 
-      $.cookie('staradmin2-pro-banner', "true", { expires: date });
-<<<<<<< HEAD
+    // document.querySelector('#bannerClose').addEventListener('click',function() {
+    //   document.querySelector('#proBanner').classList.add('d-none');
+    //   document.querySelector('#proBanner').classList.remove('d-flex');
+    //   document.querySelector('.navbar').classList.remove('pt-5');
+    //   document.querySelector('.navbar').classList.add('fixed-top');
+    //   document.querySelector('.page-body-wrapper').classList.add('proBanner-padding-top');
+    //   document.querySelector('.navbar').classList.remove('mt-3');
+    //   var date = new Date();
+    //   date.setTime(date.getTime() + 24 * 60 * 60 * 1000); 
+    //   $.cookie('staradmin2-pro-banner', "true", { expires: date });
 
-      initializeDashboardRoleSpecifics();
-=======
->>>>>>> 69b7da939545d93bb23b1acb8b3fa4d88f644f79
-    });
+    //   initializeDashboardRoleSpecifics();
+    // });
     
   });
   // iconify.load('icons.svg').then(function() {

@@ -2,7 +2,7 @@
 
     function handleLogout() {
         sessionStorage.removeItem('currentUser');
-        window.location.href = '../samples/login.html'; 
+        window.location.href = '../../../index.html'; 
     }
 
     function displayUserMenu(user) {
@@ -10,25 +10,33 @@
         
         if (!sidebarMenu) return; 
 
-        if (user.role === 'ADMIN') {
+        if (user.role == 1) {
             const adminLinks = `
-                <li class="nav-item">
-                    <a class="nav-link" href="../admin/admin_habitaciones.html">
-                        <i class="menu-icon typcn typcn-th-list"></i>
-                        <span class="menu-title">Gestión de Habitaciones</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../admin/admin_reservas.html">
+                <li class="nav-item"  style="margin-left:0px!important;">
+                    <a class="nav-link" href="../../admin/admin_reservations.html">
                         <i class="menu-icon typcn typcn-calendar"></i>
                         <span class="menu-title">Gestión de Reservas</span>
                     </a>
                 </li>
+                <li class="nav-item"  style="margin-left:0px!important;">
+                    <a class="nav-link" href="../../admin/admin_rooms.html">
+                        <i class="menu-icon typcn typcn-th-list"></i>
+                        <span class="menu-title">Gestión de habitaciones</span>
+                    </a>
+                </li>
+                <li class="nav-item"  style="margin-left:0px!important;">
+                    <a class="nav-link" href="../../admin/admin_users.html">
+                        <i class="menu-icon typcn typcn-th-list"></i>
+                        <span class="menu-title">Gestión de usuarios</span>
+                    </a>
+                </li>
             `;
             sidebarMenu.innerHTML += adminLinks;
+
+            console.log("hola");
         }
         
-        if (user.role === 'USUARIO') {
+        if (user.role == 2) {
             sidebarMenu.innerHTML += `
                 <li class="nav-item">
                     <a class="nav-link" href="../reservas/mis_reservas.html">
@@ -42,11 +50,15 @@
 
     function checkSession() {
         const userString = sessionStorage.getItem('currentUser');
-        const user = userString ? JSON.parse(userString) : null;
+        const user = {
+            nombre: getCookie("username"),
+            email: getCookie("email"),
+            role: getCookie("role")
+        };
         const path = window.location.pathname;
 
         if (!user && !path.includes('login.html') && !path.includes('register.html') && !path.includes('index.html')) {
-            window.location.href = '../samples/login.html';
+            window.location.href = '../../../index.html';
             return;
         }
         
@@ -74,3 +86,10 @@
             logoutBtn.addEventListener('click', handleLogout);
         }
     });
+
+function getCookie(nombre) {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith(nombre + "="))
+    ?.split("=")[1] || null;
+}

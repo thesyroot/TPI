@@ -140,14 +140,25 @@ window.deleteRoom = deleteRoom;
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const user = JSON.parse(sessionStorage.getItem('currentUser'));
-    if (!user || user.role !== 'ADMIN') {
+    const user = {
+            nombre: getCookie("username"),
+            email: getCookie("email"),
+            role: getCookie("role")
+        };
+    if (!user || user.role != 1) {
         alert('Acceso denegado. Solo para administradores.');
 
-        window.location.href = '../dashboard/dashboard.html'; 
+        // window.location.href = '../dashboard/dashboard.html'; 
         return;
     }
     
     roomForm.addEventListener('submit', saveRoom);
     fetchRooms();
 });
+
+function getCookie(nombre) {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith(nombre + "="))
+    ?.split("=")[1] || null;
+}

@@ -3,12 +3,16 @@ const MOCKAPI_BASE_URL = 'https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1/';
 const API_URL = `${MOCKAPI_BASE_URL}/rooms`; 
 
 function initializePage() {
-    const user = JSON.parse(sessionStorage.getItem('currentUser'));
+    const user = {
+            nombre: getCookie("username"),
+            email: getCookie("email"),
+            role: getCookie("role")
+        };
 
     
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || user.role != 1) {
         alert('Acceso denegado. Solo administradores pueden ver esta página.');
-        window.location.href = '../dashboard.html'; 
+        // window.location.href = '../dashboard.html'; 
         return;
     }
 
@@ -186,3 +190,10 @@ async function handleDeleteRoom(roomId) {
 
 
 document.addEventListener('DOMContentLoaded', initializePage);
+
+function getCookie(nombre) {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith(nombre + "="))
+    ?.split("=")[1] || null;
+}

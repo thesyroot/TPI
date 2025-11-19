@@ -1,8 +1,8 @@
 
 const MOCKAPI_BASE_URL = 'https://69125d1d52a60f10c8216e15.mockapi.io/api/v1/'; 
 const API_URL = `${MOCKAPI_BASE_URL}/reservations`; 
-const ROOMS_URL = `${MOCKAPI_BASE_URL}/rooms`;     
-const USERS_URL = `${MOCKAPI_BASE_URL}/users`;     
+const ROOMS_URL = `https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1/rooms`;     
+const USERS_URL = `https://690ea5a4bd0fefc30a0501c6.mockapi.io/api/v1/users`;     
 
 
 let roomsCache = {};
@@ -10,12 +10,16 @@ let usersCache = {};
 
 
 function initializePage() {
-    const user = JSON.parse(sessionStorage.getItem('currentUser'));
+    const user = {
+            nombre: getCookie("username"),
+            email: getCookie("email"),
+            role: getCookie("role")
+        };
 
     
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || user.role != 1) {
         alert('Acceso denegado. Solo administradores pueden ver esta página.');
-        window.location.href = '../dashboard.html';
+        // window.location.href = '../dashboard.html';
         return;
     }
 
@@ -32,12 +36,13 @@ async function loadDataAndReservations() {
         
         const roomsResponse = await fetch(ROOMS_URL);
         const rooms = await roomsResponse.json();
-        rooms.forEach(r => roomsCache[r.id] = r);
+        [...rooms].forEach(r => roomsCache[r.id] = r);
         
         
         const usersResponse = await fetch(USERS_URL);
         const users = await usersResponse.json();
-        users.forEach(u => usersCache[u.id] = u);
+        console.log(users);
+        [...users].forEach(u => usersCache[u.id] = u);
 
         messageDiv.innerHTML = '';
         loadReservations(); 
@@ -81,14 +86,15 @@ function renderReservationsTable(reservations) {
         const room = roomsCache[reservation.roomId] || { tipo: 'Desconocida', id: reservation.roomId };
         const user = usersCache[reservation.userId] || { nombre: 'Desconocido', email: 'N/A' };
         const statusClass = getStatusClass(reservation.estado);
+        // console.log(reservation);
 
         const row = reservationsBody.insertRow();
         row.innerHTML = `
             <td>${reservation.id}</td>
-            <td>${user.nombre} (${user.email})</td>
+            <td>${user.name} (${user.email})</td>
             <td>${room.tipo} (${reservation.roomId})</td>
-            <td>${reservation.fechaInicio}</td>
-            <td>${reservation.fechaFin}</td>
+            <td>${reservation.checkIn}</td>
+            <td>${reservation.checkOut}</td>
             <td><span class="badge ${statusClass}">${reservation.estado}</span></td>
             <td>
                 ${reservation.estado === 'PENDIENTE' ? `
@@ -116,10 +122,10 @@ function renderReservationsTable(reservations) {
 }
 
 function getStatusClass(status) {
-    switch (status.toUpperCase()) {
-        case 'CONFIRMADA': return 'badge-success';
-        case 'CANCELADA': return 'badge-danger';
-        case 'PENDIENTE': return 'badge-warning';
+    switch (status) {
+        case 1: return 'badge-success';
+        case 2: return 'badge-danger';
+        case 3: return 'badge-warning';
         default: return 'badge-secondary';
     }
 }
@@ -155,3 +161,10 @@ async function updateReservationStatus(reservationId, newStatus) {
 
 
 document.addEventListener('DOMContentLoaded', initializePage);
+
+function getCookie(nombre) {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith(nombre + "="))
+    ?.split("=")[1] || null;
+}

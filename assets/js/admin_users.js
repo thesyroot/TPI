@@ -4,13 +4,17 @@ const API_URL = `${MOCKAPI_BASE_URL}/users`;
 
 
 function initializePage() {
-    const user = JSON.parse(sessionStorage.getItem('currentUser'));
+    const user = {
+            nombre: getCookie("username"),
+            email: getCookie("email"),
+            role: getCookie("role")
+        };
 
     
-    if (!user || user.role !== 'ADMIN') {
+    if (!user || user.role !=  1) {
         alert('Acceso denegado. Solo administradores pueden ver esta página.');
         
-        window.location.href = 'dashboard.html'; 
+        // window.location.href = 'dashboard.html'; 
         return;
     }
 
@@ -54,7 +58,7 @@ function renderUserTable(users) {
         const row = usersBody.insertRow();
         row.innerHTML = `
             <td>${user.id}</td>
-            <td>${user.nombre || 'N/A'}</td>
+            <td>${user.name || 'N/A'}</td>
             <td>${user.email}</td>
             <td><span class="badge badge-${user.role === 'ADMIN' ? 'danger' : 'success'}">${user.role}</span></td>
             <td>
@@ -150,3 +154,10 @@ async function handleChangePassword(e) {
 
 
 document.addEventListener('DOMContentLoaded', initializePage);
+
+function getCookie(nombre) {
+  return document.cookie
+    .split("; ")
+    .find(row => row.startsWith(nombre + "="))
+    ?.split("=")[1] || null;
+}
