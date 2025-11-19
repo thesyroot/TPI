@@ -68,16 +68,16 @@
         //     return;
         // }
         
-        if (user) {
-            document.querySelectorAll('.username-tag').forEach(span => {
-                span.textContent = user.name || 'Usuario';
-            });
-            document.querySelectorAll('.email-tag').forEach(p => {
-                p.textContent = user.email;
-            });
+        // if (user) {
+        //     document.querySelectorAll('.username-tag').forEach(span => {
+        //         span.textContent = user.name || 'Usuario';
+        //     });
+        //     document.querySelectorAll('.email-tag').forEach(p => {
+        //         p.textContent = user.email;
+        //     });
             
             displayUserMenu(user);
-        }
+        // }
         
         // if (user && path.includes('login.html')) {
         //     window.location.href = '../dashboard/dashboard.html'; 

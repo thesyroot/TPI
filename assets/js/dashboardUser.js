@@ -103,7 +103,7 @@ async function loadRooms() {
       return;
     }
 
-    rooms.forEach((room) => {
+    [...rooms].forEach((room) => {
       const disponible = room.disponible === true || room.disponible === "true";
 
       // Tabla
@@ -188,6 +188,7 @@ async function loadReservations() {
   const tbody = document.getElementById("reservationsBody");
   tbody.innerHTML = "";
 
+  // console.log(userId);
   try {
     // Reservas del usuario
     const resRes = await fetch(
@@ -206,8 +207,8 @@ async function loadReservations() {
     const resRooms = await fetch(`${API_USERS_ROOMS}/rooms`);
     const rooms    = await resRooms.json();
 
-    reservations.forEach((reserva) => {
-      const room = rooms.find((r) => Number(r.id) === Number(reserva.roomId));
+    [...reservations].forEach((reserva) => {
+      const room = rooms.find((r) => parseInt(r.id) == reserva.roomId);
       const nombreHabitacion = room ? room.tipo : `Hab. ${reserva.roomId}`;
 
       const textoEstado  = getEstadoTexto(reserva.estado);
