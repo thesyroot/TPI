@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Gestión de Habitaciones - ADMIN</title>
+
+    <link rel="stylesheet" href="../../../assets/vendors/feather/feather.css" />
+    <link rel="stylesheet" href="../../../assets/vendors/mdi/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="../../../assets/vendors/css/vendor.bundle.base.css" />
+    <link rel="stylesheet" href="../../../assets/css/style.css" />
+  </head>
+  <body>
+    <div class="container-scroller">
+      <div class="container-fluid page-body-wrapper">
+        
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="row">
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Gestión de Habitaciones</h4>
+                    <p class="card-description">
+                      Alta, Baja y Modificación de las habitaciones del hotel.
+                    </p>
+
+                    <button type="button" class="btn btn-primary btn-icon-text mb-3" 
+                            data-bs-toggle="modal" data-bs-target="#roomModal"
+                            onclick="resetRoomForm()">
+                      <i class="typcn typcn-plus btn-icon-prepend"></i>
+                      Nueva Habitación
+                    </button>
+
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Tipo</th>
+                            <th>Precio</th>
+                            <th>Disponible</th>
+                            <th>Acciones</th>
+                          </tr>
+                        </thead>
+                        <tbody id="roomsTableBody">
+                          </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    <div class="modal fade" id="roomModal" tabindex="-1" aria-labelledby="roomModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="roomModalLabel">Crear Nueva Habitación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="roomForm">
+                        <input type="hidden" id="roomId" name="id">
+                        
+                        <div class="mb-3">
+                            <label for="roomType" class="form-label">Tipo de Habitación</label>
+                            <input type="text" class="form-control" id="roomType" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="roomPrice" class="form-label">Precio por Noche</label>
+                            <input type="number" class="form-control" id="roomPrice" step="0.01" required>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="roomAvailable">
+                            <label class="form-check-label" for="roomAvailable">Disponible para Reservar</label>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" form="roomForm" id="saveRoomBtn">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../../../assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="../../../assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    
+    <script src="../../../assets/js/auth.js"></script> 
+    <script src="../../../assets/js/admin_hab.js"></script>
+  </body>
+</html>

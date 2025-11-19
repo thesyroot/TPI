@@ -1,0 +1,157 @@
+
+const MOCKAPI_BASE_URL = 'https://69125d1d52a60f10c8216e15.mockapi.io/api/v1/'; 
+const API_URL = `${MOCKAPI_BASE_URL}/reservations`; 
+const ROOMS_URL = `${MOCKAPI_BASE_URL}/rooms`;     
+const USERS_URL = `${MOCKAPI_BASE_URL}/users`;     
+
+
+let roomsCache = {};
+let usersCache = {};
+
+
+function initializePage() {
+    const user = JSON.parse(sessionStorage.getItem('currentUser'));
+
+    
+    if (!user || user.role !== 'ADMIN') {
+        alert('Acceso denegado. Solo administradores pueden ver esta página.');
+        window.location.href = '../dashboard.html';
+        return;
+    }
+
+    
+    loadDataAndReservations();
+}
+
+
+async function loadDataAndReservations() {
+    const messageDiv = document.getElementById('reservationsMessage');
+    messageDiv.innerHTML = '<div class="alert alert-info">Cargando datos (habitaciones y usuarios)...</div>';
+    
+    try {
+        
+        const roomsResponse = await fetch(ROOMS_URL);
+        const rooms = await roomsResponse.json();
+        rooms.forEach(r => roomsCache[r.id] = r);
+        
+        
+        const usersResponse = await fetch(USERS_URL);
+        const users = await usersResponse.json();
+        users.forEach(u => usersCache[u.id] = u);
+
+        messageDiv.innerHTML = '';
+        loadReservations(); 
+    } catch (error) {
+        console.error("Error al cargar datos auxiliares:", error);
+        messageDiv.innerHTML = `<div class="alert alert-danger">Error al cargar datos auxiliares: ${error.message}</div>`;
+    }
+}
+
+
+async function loadReservations() {
+    const reservationsBody = document.getElementById('allReservationsBody');
+    reservationsBody.innerHTML = '<tr><td colspan="7" class="text-center">Cargando reservas...</td></tr>';
+    
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error('Error al cargar la lista de reservas.');
+        
+        const reservations = await response.json();
+        
+        
+        reservations.sort((a, b) => b.id - a.id); 
+        
+        renderReservationsTable(reservations);
+    } catch (error) {
+        console.error("Error al cargar reservas:", error);
+        reservationsBody.innerHTML = `<tr><td colspan="7" class="text-danger text-center">Error: ${error.message}</td></tr>`;
+    }
+}
+
+function renderReservationsTable(reservations) {
+    const reservationsBody = document.getElementById('allReservationsBody');
+    reservationsBody.innerHTML = ''; 
+    
+    if (reservations.length === 0) {
+        reservationsBody.innerHTML = '<tr><td colspan="7" class="text-center">No hay reservas registradas.</td></tr>';
+        return;
+    }
+
+    reservations.forEach(reservation => {
+        const room = roomsCache[reservation.roomId] || { tipo: 'Desconocida', id: reservation.roomId };
+        const user = usersCache[reservation.userId] || { nombre: 'Desconocido', email: 'N/A' };
+        const statusClass = getStatusClass(reservation.estado);
+
+        const row = reservationsBody.insertRow();
+        row.innerHTML = `
+            <td>${reservation.id}</td>
+            <td>${user.nombre} (${user.email})</td>
+            <td>${room.tipo} (${reservation.roomId})</td>
+            <td>${reservation.fechaInicio}</td>
+            <td>${reservation.fechaFin}</td>
+            <td><span class="badge ${statusClass}">${reservation.estado}</span></td>
+            <td>
+                ${reservation.estado === 'PENDIENTE' ? `
+                    <button class="btn btn-success btn-sm action-btn" data-id="${reservation.id}" data-action="CONFIRMADA">
+                        <i class="mdi mdi-check"></i> Confirmar
+                    </button>
+                    <button class="btn btn-danger btn-sm action-btn" data-id="${reservation.id}" data-action="CANCELADA">
+                        <i class="mdi mdi-close"></i> Cancelar
+                    </button>
+                ` : `
+                    <span class="text-muted">Finalizada</span>
+                `}
+            </td>
+        `;
+    });
+
+    
+    document.querySelectorAll('.action-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            const action = e.currentTarget.getAttribute('data-action');
+            updateReservationStatus(id, action);
+        });
+    });
+}
+
+function getStatusClass(status) {
+    switch (status.toUpperCase()) {
+        case 'CONFIRMADA': return 'badge-success';
+        case 'CANCELADA': return 'badge-danger';
+        case 'PENDIENTE': return 'badge-warning';
+        default: return 'badge-secondary';
+    }
+}
+
+
+async function updateReservationStatus(reservationId, newStatus) {
+    const messageDiv = document.getElementById('reservationsMessage');
+    
+    if (!confirm(`¿Estás seguro de cambiar el estado de la reserva ${reservationId} a ${newStatus}?`)) {
+        return;
+    }
+
+    messageDiv.innerHTML = `<div class="alert alert-info">Actualizando reserva ${reservationId} a ${newStatus}...</div>`;
+    
+    try {
+        const response = await fetch(`${API_URL}/${reservationId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ estado: newStatus }) 
+        });
+
+        if (!response.ok) throw new Error('Error al actualizar el estado de la reserva.');
+        
+        messageDiv.innerHTML = `<div class="alert alert-success">Reserva ${reservationId} actualizada a ${newStatus} exitosamente.</div>`;
+        loadReservations();
+
+    } catch (error) {
+        console.error("Error al actualizar reserva:", error);
+        messageDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+    }
+}
+
+
+
+document.addEventListener('DOMContentLoaded', initializePage);
