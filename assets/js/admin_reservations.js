@@ -52,6 +52,14 @@ async function loadDataAndReservations() {
     }
 }
 
+function getEstadoTexto(estado) {
+  const n = Number(estado);
+  if (n === 0) return "pendiente";
+  if (n === 1) return "confirmada";
+  if (n === 2) return "cancelada";
+  return "desconocido";
+}
+
 
 async function loadReservations() {
     const reservationsBody = document.getElementById('allReservationsBody');
@@ -95,9 +103,9 @@ function renderReservationsTable(reservations) {
             <td>${room.tipo} (${reservation.roomId})</td>
             <td>${reservation.checkIn}</td>
             <td>${reservation.checkOut}</td>
-            <td><span class="badge ${statusClass}">${reservation.estado}</span></td>
+            <td><span class="badge ${statusClass}">${getEstadoTexto(reservation.estado)}</span></td>
             <td>
-                ${reservation.estado === 'PENDIENTE' ? `
+                ${getEstadoTexto(reservation.estado) == 'pendiente' ? `
                     <button class="btn btn-success btn-sm action-btn" data-id="${reservation.id}" data-action="CONFIRMADA">
                         <i class="mdi mdi-check"></i> Confirmar
                     </button>

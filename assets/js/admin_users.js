@@ -60,7 +60,7 @@ function renderUserTable(users) {
             <td>${user.id}</td>
             <td>${user.name || 'N/A'}</td>
             <td>${user.email}</td>
-            <td><span class="badge badge-${user.role === 'ADMIN' ? 'danger' : 'success'}">${user.role}</span></td>
+            <td><span class="badge badge-${getRolTexto(user.role) === 'ADMIN' ? 'danger' : 'success'}">${getRolTexto(user.role)}</span></td>
             <td>
                 <button class="btn btn-warning btn-sm change-password-btn" data-user-id="${user.id}" data-user-email="${user.email}">
                     <i class="mdi mdi-key"></i> Cambiar Pwd
@@ -79,6 +79,12 @@ function renderUserTable(users) {
     });
 }
 
+function getRolTexto(rol) {
+  const n = Number(rol);
+  if (n === 1) return "ADMIN";
+  if (n === 2) return "USUARIO";
+  return "desconocido";
+}
 
 async function handleCreateUser(e) {
     e.preventDefault();

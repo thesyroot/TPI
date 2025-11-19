@@ -56,18 +56,26 @@ function renderReservations(reservations, users, rooms) {
             <td>${reservation.checkIn}</td>
             <td>${reservation.checkOut}</td>
             <td>
-                <span class="badge ${statusClass}">${reservation.estado}</span>
+                <span class="badge ${statusClass}">${getEstadoTexto(reservation.estado)}</span>
             </td>
             <td>
                 <select class="form-select form-select-sm" onchange="updateReservationStatus(${reservation.id}, this.value)">
-                    <option value="Pendiente" ${reservation.estado === 'Pendiente' ? 'selected' : ''}>Pendiente</option>
-                    <option value="Confirmada" ${reservation.estado === 'Confirmada' ? 'selected' : ''}>Confirmada</option>
-                    <option value="Cancelada" ${reservation.estado === 'Cancelada' ? 'selected' : ''}>Cancelada</option>
+                    <option value="0" ${reservation.estado == 0 ? 'selected' : ''}>Pendiente</option>
+                    <option value="1" ${reservation.estado == 1 ? 'selected' : ''}>Confirmada</option>
+                    <option value="2" ${reservation.estado == 2 ? 'selected' : ''}>Cancelada</option>
                 </select>
             </td>
         `;
         reservationsTableBody.appendChild(row);
     });
+}
+
+function getEstadoTexto(estado) {
+  const n = Number(estado);
+  if (n === 0) return "pendiente";
+  if (n === 1) return "confirmada";
+  if (n === 2) return "cancelada";
+  return "desconocido";
 }
 
 
