@@ -196,7 +196,9 @@ async function loadReservations() {
     );
     const reservations = await resRes.json();
 
-    if (!reservations.length) {
+    console.log(resRes.status);
+
+    if (!reservations.length || parseInt(resRes.status) == 404) {
       tbody.innerHTML = `
         <tr><td colspan="5">No tenés reservas.</td></tr>
       `;
